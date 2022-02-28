@@ -1,0 +1,40 @@
+
+
+get http://localhost:3000/articles
+Content-Type: application/json
+
+###
+
+get http://localhost:3000/articles/1
+Content-Type: application/json
+
+###
+
+post http://localhost:3000/articles
+Content-Type: application/json
+
+{
+    "titre":"Le titre de l'article",
+    "content":"tst test",
+    "image":"image.png",
+    "userId":1
+    
+}
+
+###
+
+patch http://localhost:3000/articles/1
+Content-Type: application/json
+
+{
+    "titre":"Le titre de l'article",
+    "content":"TEST UPDATE TEXT",
+    "image":"yyy.png",
+    "userId":1
+}
+
+
+###
+
+delete http://localhost:3000/articles/2
+Content-Type: application/json

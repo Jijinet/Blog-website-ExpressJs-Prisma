@@ -1,0 +1,39 @@
+
+
+get http://localhost:3000/users
+Content-Type: application/json
+
+###
+
+get http://localhost:3000/users/1
+Content-Type: application/json
+
+###
+
+post http://localhost:3000/users
+Content-Type: application/json
+
+{
+    "nom":"sanaa",
+    "email":"sanaa11@gmail.com",
+    "password":"sanaa1122",
+    "role":"USER"
+}
+
+###
+
+patch http://localhost:3000/users/1
+Content-Type: application/json
+
+{
+    "nom":"jiji",
+    "email":"jiji11@gmail.com",
+    "password":"jiji1122",
+    "role":"USER"
+}
+
+
+###
+
+delete http://localhost:3000/users/2
+Content-Type: application/json

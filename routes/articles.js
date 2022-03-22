@@ -8,7 +8,7 @@ const  prisma  = new PrismaClient()
 /* GET articles listing. */
 router.get('/', async function(req, res, next) {
   const articles = await prisma.article.findMany({
-    include:{ categories:true,commentaire:true}
+    include:{ categories:true,commentaires:true}
   });
   res.json(articles);
 });

@@ -15,7 +15,7 @@ model User {
   nom      String
   email    String    @unique @db.VarChar(64)
   password String
-  role     Role      @default(USER)
+  role     Role      @default(AUTHOR)
   articles Article[]
 
   @@map(name: "users")
@@ -32,14 +32,14 @@ model Article {
   Author      User?         @relation(fields: [userId], references: [id])
   userId      Int?
   categories  Category[]
-  commentaire Commentaire[]
+  commentaires Commentaire[]
 
   @@map(name: "articles")
 }
 
 model Category {
   id       Int       @id @default(autoincrement())
-  nom      String    @unique
+  nom      String    
   articles Article[]
 
   @@map(name: "categories")
@@ -56,7 +56,6 @@ model Commentaire {
 }
 
 enum Role {
-  USER
   ADMIN
-  EDITOR
+  AUTHOR
 }

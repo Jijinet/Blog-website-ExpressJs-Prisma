@@ -1,9 +1,10 @@
 -- CreateTable
 CREATE TABLE `users` (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
+    `nom` VARCHAR(191) NOT NULL,
     `email` VARCHAR(64) NOT NULL,
     `password` VARCHAR(191) NOT NULL,
-    `role` ENUM('USER', 'ADMIN', 'EDITOR') NOT NULL DEFAULT 'USER',
+    `role` ENUM('ADMIN', 'AUTHOR') NOT NULL DEFAULT 'AUTHOR',
 
     UNIQUE INDEX `users_email_key`(`email`),
     PRIMARY KEY (`id`)

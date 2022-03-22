@@ -2,6 +2,9 @@
   "name": "projet-bdcc",
   "version": "0.0.0",
   "private": true,
+  "prisma": {
+    "seed": "node seeds/seeds.js"
+  },
   "scripts": {
     "start": "nodemon ./bin/www"
   },
@@ -15,6 +18,8 @@
     "morgan": "~1.9.1"
   },
   "devDependencies": {
+    "@faker-js/faker": "^6.0.0-alpha.7",
+    "faker": "^6.6.6",
     "nodemon": "^2.0.15",
     "prisma": "^3.10.0"
   }

@@ -5,6 +5,13 @@ const {PrismaClient} = require("@prisma/client")
 
 const  prisma  = new PrismaClient()
 
+const bcrypt=require('bcryptjs')
+
+const {registerValidation} = require('../validation/validation');
+const {loginValidation} = require('../validation/validation');
+
+const jwt= require('jsonwebtoken');
+
 /* GET users listing. */
 router.get('/', async function(req, res, next) {
   const users = await prisma.user.findMany({
@@ -27,12 +34,78 @@ router.get('/:id', async function(req, res, next) {
 
 
 
-router.post('/', async function(req,res,next){
+router.post('/register', async function(req,res,next){
 
-  const data =req.body;
-  const user= await prisma.user.create({data})
+  //? VALIDER LA CREATION DE L'UTILISATEUR 
+  const {error}=registerValidation(req.body);
+
+  if(error) return res.status(400).send(error.details[0].message)
+
+  //? VERIFIER QUE L'UTILISATEUR DEJA EXISTE
+  const emailExist= await prisma.user.findUnique({
+    where: {
+      email: req.body.email
+    },
+   select: {
+     email: true
+  }
+  })
+  if(emailExist)return res.status(400).send('email already exist')
+
+  //? CRYPTER LE MOT DE PASSE
+  const salt=bcrypt.genSaltSync(10);
+  const hashPassword=bcrypt.hashSync(req.body.password,salt);
+
+
+  const data = {
+    nom:req.body.nom,
+    email:req.body.email,
+    password:hashPassword,
+    role:req.body.role
+  }
+
+
+  //? CREER UN UTILISATEUR
+  try {
+    const user= await prisma.user.create({data})
   res.json(user);
+  } catch (err) {
+    res.status(400).send(err);
+  }
+  
 });
+
+
+router.post('/login', async function(req, res, next) {
+
+  //? VALIDER LA CREATION DE L'UTILISATEUR 
+const {error}=loginValidation(req.body);
+
+if(error) return res.status(400).send(error.details[0].message)
+
+  //? SELECTIONNER L'UTILISATEUR
+
+
+
+  //? VERIFIER QUE L'UTILISATEUR N'EXISTE PAS
+  const users= await prisma.user.findUnique({
+      where: {
+        email: req.body.email
+      }
+    })
+    if(!users)return res.status(400).send('email doesnt exist')
+
+
+  //? VERIFIER LE MOT DE PASSE
+    const validPass= bcrypt.compareSync(req.body.password,users.password);
+    if(!validPass)return res.status(400).send('Invalid password');
+
+    //? CREER LE WEB TOKEN
+    const token = jwt.sign({_id:users.id},process.env.TOKEN_SECRET)
+    res.header('auth-token',token).send(token);
+});
+
+
 
 router.delete('/:id',async function(req,res,next){
   const  {id} = req.params;

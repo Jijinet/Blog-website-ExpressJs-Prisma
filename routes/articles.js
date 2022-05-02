@@ -1,12 +1,13 @@
 var express = require('express');
 var router = express.Router();
+const verify=require('./verifyToken');
 
 const {PrismaClient} = require("@prisma/client")
 
 const  prisma  = new PrismaClient()
 
 /* GET articles listing. */
-router.get('/', async function(req, res, next) {
+router.get('/',verify, async function(req, res, next) {
   const articles = await prisma.article.findMany({
     include:{ categories:true,commentaires:true}
   });
@@ -27,7 +28,7 @@ router.get('/:id', async function(req, res, next) {
 
 
 
-router.post('/', async function(req,res,next){
+router.post('/',verify, async function(req,res,next){
 
   const data =req.body;
   const article= await prisma.article.create({data})
@@ -36,7 +37,7 @@ router.post('/', async function(req,res,next){
 
 
 
-router.delete('/:id',async function(req,res,next){
+router.delete('/:id',verify,async function(req,res,next){
   const  {id} = req.params;
   const article = await prisma.article.delete
   ({
@@ -48,7 +49,7 @@ router.delete('/:id',async function(req,res,next){
 })
 
 
-router.patch('/:id',async function(req,res,next){
+router.patch('/:id',verify,async function(req,res,next){
   const {id} = req.params;
   const data=req.body;
   const article= await prisma.article.update({

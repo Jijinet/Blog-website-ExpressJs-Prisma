@@ -5,19 +5,29 @@ Content-Type: application/json
 
 ###
 
-get http://localhost:3000/users/1
+get http://localhost:3000/users/42
 Content-Type: application/json
 
 ###
 
-post http://localhost:3000/users
+post http://localhost:3000/users/register
 Content-Type: application/json
 
 {
-    "nom":"sanaa",
-    "email":"sanaa11@gmail.com",
-    "password":"sanaa1122",
-    "role":"USER"
+    "nom":"jihane",
+    "email":"jihan@gmail.com",
+    "password":"jihane123",
+    "role":"AUTHOR"
+}
+
+###
+
+post http://localhost:3000/users/login
+Content-Type: application/json
+
+{
+    "email":"jihan@gmail.com",
+    "password":"jihane123"
 }
 
 ###

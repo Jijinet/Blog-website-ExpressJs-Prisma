@@ -8,26 +8,28 @@ var usersRouter = require('./routes/users');
 var articlesRouter = require('./routes/articles');
 var categoriesRouter = require('./routes/categories');
 var commentairesRouter = require('./routes/commentaires');
-var authRouter = require('./routes/auth');
 
 
 var app = express();
 
 // view engine setup
-app.set('views', path.join(__dirname, 'views'));
-app.set('view engine', 'jade');
+// app.set('views', path.join(__dirname, 'views'));
+// app.set('view engine', 'jade');
 
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
-app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static(path.join(__dirname, 'public'),{extensions: ["js"]}));
+
+app.get('/',(req,res)=>{
+    res.sendFile(path.resolve(__dirname,"public","index.html"))
+})
 
 app.use('/users', usersRouter);
 app.use('/articles', articlesRouter);
 app.use('/categories', categoriesRouter);
 app.use('/commentaires', commentairesRouter);
-app.use('/auth', authRouter);
 
 
 

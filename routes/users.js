@@ -84,15 +84,12 @@ const {error}=loginValidation(req.body);
 if(error) return res.status(400).send(error.details[0].message)
 
   //? SELECTIONNER L'UTILISATEUR
-
-
-
-  //? VERIFIER QUE L'UTILISATEUR N'EXISTE PAS
   const users= await prisma.user.findUnique({
       where: {
         email: req.body.email
       }
     })
+      //? VERIFIER QUE L'UTILISATEUR N'EXISTE PAS
     if(!users)return res.status(400).send('email doesnt exist')
 
 
